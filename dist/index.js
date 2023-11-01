@@ -27,9 +27,9 @@ app.use((0, body_parser_1.json)());
 app.use((0, cors_1.default)());
 const port = process.env.PORT || 9090;
 app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     const userId = (0, uuid_1.v4)();
-    yield client.query(`INSERT INTO public.users (email, password, id) VALUES ('${email}', '${password}', '${userId}')`);
+    yield client.query(`INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`);
     res.status(201).send({ userId }).end();
 }));
 app.get("/api", (req, res) => {
