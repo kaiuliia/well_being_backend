@@ -17,12 +17,14 @@ const body_parser_1 = require("body-parser");
 const dotenv_1 = __importDefault(require("dotenv"));
 const pg_1 = require("pg");
 const uuid_1 = require("uuid");
+const cors_1 = __importDefault(require("cors"));
 const client = new pg_1.Client({ database: "wellbeing" });
 client.connect().catch(console.log);
 //For env File
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, body_parser_1.json)());
+app.use((0, cors_1.default)());
 const port = process.env.PORT || 9090;
 app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
@@ -30,6 +32,11 @@ app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     yield client.query(`INSERT INTO public.users (email, password, id) VALUES ('${email}', '${password}', '${userId}')`);
     res.status(201).send({ userId }).end();
 }));
+app.get("/api", (req, res) => {
+    res.json({
+        message: "hello from backend",
+    });
+});
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
