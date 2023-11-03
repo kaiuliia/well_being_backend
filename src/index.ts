@@ -44,16 +44,10 @@ app.post(
     await client.query(
       `INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`,
     );
-
-    res.status(201).send({ userId }).end();
+    res.cookie("id", { userId });
+    res.status(201).end();
   },
 );
-
-app.get("/api", (req, res) => {
-  res.json({
-    message: "hello from backend",
-  });
-});
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
