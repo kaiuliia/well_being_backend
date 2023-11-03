@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { Client } from "pg";
 import { v4 as uuidv4 } from "uuid";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const client = new Client({ database: "wellbeing" });
 client.connect().catch(console.log);
@@ -14,6 +15,7 @@ dotenv.config();
 const app: Application = express();
 app.use(json());
 app.use(cors());
+app.use(cookieParser());
 
 const port = process.env.PORT || 9090;
 
