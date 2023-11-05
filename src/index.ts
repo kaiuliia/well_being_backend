@@ -60,15 +60,18 @@ app.post(
     res: Response,
   ): Promise<void> => {
     const { email, password } = req.body;
-    const userId = uuidv4();
-    await client.query(
+    const { rows } = await client.query(
       `SELECT * FROM public.users WHERE email = '${email}' AND password = '${password}'`,
     );
-    if (userId) {
-      res.cookie("id", { userId });
-      res.status(201).send("Got it!").end();
+
+    if (rows.length > 0) {
+      // res.cookie("id", { userId });
+      res
+        .status(201)
+        .send({ name: `${rows[0].name}.` })
+        .end();
     } else {
-      res.status(404).send("Sorry, we cannot find that!");
+      res.status(404).send({ error: "Sorry, we cannot find that!" });
     }
   },
 );

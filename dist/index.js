@@ -37,10 +37,17 @@ app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* 
 }));
 app.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    const userId = (0, uuid_1.v4)();
-    yield client.query(`SELECT * FROM public.users WHERE email = '${email}' AND password = '${password}'`);
-    res.cookie("id", { userId });
-    res.status(201).end();
+    const { rows } = yield client.query(`SELECT * FROM public.users WHERE email = '${email}' AND password = '${password}'`);
+    if (rows.length > 0) {
+        // res.cookie("id", { userId });
+        res
+            .status(201)
+            .send({ name: `${rows[0].name}.` })
+            .end();
+    }
+    else {
+        res.status(404).send({ error: "Sorry, we cannot find that!" });
+    }
 }));
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
