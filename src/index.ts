@@ -64,8 +64,12 @@ app.post(
     await client.query(
       `SELECT * FROM public.users WHERE email = '${email}' AND password = '${password}'`,
     );
-    res.cookie("id", { userId });
-    res.status(201).end();
+    if (userId) {
+      res.cookie("id", { userId });
+      res.status(201).send("Got it!").end();
+    } else {
+      res.status(404).send("Sorry, we cannot find that!");
+    }
   },
 );
 
