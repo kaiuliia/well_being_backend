@@ -49,6 +49,26 @@ app.post(
   },
 );
 
+app.post(
+  "/login",
+  async (
+    req: Request<
+      {} /*p*/,
+      RegisterResponse /*resbody - то что я должна ответить*/,
+      RegisterRequest /*reqbody - то что я принимаю*/
+    >,
+    res: Response,
+  ): Promise<void> => {
+    const { email, password } = req.body;
+    const userId = uuidv4();
+    await client.query(
+      `SELECT * FROM public.users WHERE email = '${email}' AND password = '${password}'`,
+    );
+    res.cookie("id", { userId });
+    res.status(201).end();
+  },
+);
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });

@@ -35,6 +35,13 @@ app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     res.cookie("id", { userId });
     res.status(201).end();
 }));
+app.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    const userId = (0, uuid_1.v4)();
+    yield client.query(`SELECT * FROM public.users WHERE email = '${email}' AND password = '${password}'`);
+    res.cookie("id", { userId });
+    res.status(201).end();
+}));
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
