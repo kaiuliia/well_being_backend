@@ -19,6 +19,12 @@ const pg_1 = require("pg");
 const uuid_1 = require("uuid");
 const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const zod_1 = require("zod");
+const RegisterRequestSchema = zod_1.z.object({
+    name: zod_1.z.string(),
+    email: zod_1.z.string().email(),
+    password: zod_1.z.string(),
+});
 const client = new pg_1.Client({ database: "wellbeing" });
 client.connect().catch(console.log);
 //For env File
@@ -29,11 +35,19 @@ app.use((0, cors_1.default)());
 app.use((0, cookie_parser_1.default)());
 const port = process.env.PORT || 9090;
 app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, password } = req.body;
-    const userId = (0, uuid_1.v4)();
-    yield client.query(`INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`);
-    res.cookie("id", { userId });
-    res.status(201).end();
+    const result = RegisterRequestSchema.safeParse(req.body);
+    if (!result.success) {
+        const error = result.error;
+        res.status(400).send({ error });
+        return;
+    }
+    else {
+        const { name, email, password } = result.data;
+        const userId = (0, uuid_1.v4)();
+        yield client.query(`INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`);
+        res.cookie("id", { userId });
+        res.status(201).end();
+    }
 }));
 app.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;

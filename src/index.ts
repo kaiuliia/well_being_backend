@@ -5,6 +5,15 @@ import { Client } from "pg";
 import { v4 as uuidv4 } from "uuid";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { z } from "zod";
+
+const RegisterRequestSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+});
+
+type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
 
 const client = new Client({ database: "wellbeing" });
 client.connect().catch(console.log);
@@ -18,12 +27,6 @@ app.use(cors());
 app.use(cookieParser());
 
 const port = process.env.PORT || 9090;
-
-interface RegisterRequest {
-  name: string;
-  email: string;
-  password: string;
-}
 
 interface RegisterResponse {
   userId: string;
@@ -39,13 +42,21 @@ app.post(
     >,
     res: Response,
   ): Promise<void> => {
-    const { name, email, password } = req.body;
-    const userId = uuidv4();
-    await client.query(
-      `INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`,
-    );
-    res.cookie("id", { userId });
-    res.status(201).end();
+    const result = RegisterRequestSchema.safeParse(req.body);
+
+    if (!result.success) {
+      const error = result.error;
+      res.status(400).send({ error });
+      return;
+    } else {
+      const { name, email, password } = result.data;
+      const userId = uuidv4();
+      await client.query(
+        `INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`,
+      );
+      res.cookie("id", { userId });
+      res.status(201).end();
+    }
   },
 );
 
