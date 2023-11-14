@@ -55,7 +55,7 @@ app.post(
         `INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`,
       );
       res.cookie("id", { userId });
-      res.status(201).end();
+      res.status(201).send({ name: name }).end();
     }
   },
 );
