@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.48">
     <root id="1">
       <DateStyle>mdy</DateStyle>
-      <IntrospectionStateNumber>868</IntrospectionStateNumber>
+      <IntrospectionStateNumber>879</IntrospectionStateNumber>
       <ServerVersion>15.4</ServerVersion>
       <StartupTime>1699003194</StartupTime>
       <TimeZones>true ACDT
@@ -810,7 +810,7 @@ false Zulu
 13471||10|C|G
 13471||-9223372036854775808|U|G
 13471||10|U|G</Grants>
-      <IntrospectionStateNumber>868</IntrospectionStateNumber>
+      <IntrospectionStateNumber>879</IntrospectionStateNumber>
       <ObjectId>16458</ObjectId>
       <OwnerName>iuliia</OwnerName>
     </database>
@@ -4230,7 +4230,7 @@ false Zulu
     <schema id="264" parent="4" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>868</IntrospectionStateNumber>
+      <IntrospectionStateNumber>879</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>517</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4243,9 +4243,9 @@ false Zulu
       <StateNumber>863</StateNumber>
       <OwnerName>iuliia</OwnerName>
     </sequence>
-    <table id="266" parent="264" name="characteristics">
+    <table id="266" parent="264" name="survey">
       <ObjectId>16495</ObjectId>
-      <StateNumber>863</StateNumber>
+      <StateNumber>878</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>iuliia</OwnerName>
     </table>
@@ -4255,14 +4255,14 @@ false Zulu
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>iuliia</OwnerName>
     </table>
-    <column id="268" parent="266" name="character_id">
-      <DasType>integer|0s</DasType>
+    <column id="268" parent="266" name="id">
+      <DasType>varchar|0s</DasType>
       <DefaultExpression>nextval(&apos;characteristics_character_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>863</StateNumber>
+      <StateNumber>878</StateNumber>
       <SequenceId>16494</SequenceId>
-      <TypeId>23</TypeId>
+      <TypeId>1043</TypeId>
     </column>
     <column id="269" parent="266" name="user_id">
       <DasType>varchar|0s</DasType>
@@ -4314,7 +4314,6 @@ false Zulu
     </column>
     <foreign-key id="277" parent="266" name="characteristics_user_id_fkey">
       <ColNames>user_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
       <ObjectId>16505</ObjectId>
       <RefColNames>id</RefColNames>
       <RefColPositions>3</RefColPositions>
@@ -4324,19 +4323,21 @@ false Zulu
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <index id="278" parent="266" name="characteristics_pkey">
-      <ColNames>character_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16501</ObjectId>
+      <ColNames>id</ColNames>
+      <ObjectId>16511</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>863</StateNumber>
+      <StateNumber>878</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
     <index id="279" parent="266" name="unique_user_date">
       <ColNames>user_id
 date</ColNames>
       <ObjectId>16503</ObjectId>
-      <StateNumber>863</StateNumber>
+      <StateNumber>878</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
@@ -4344,11 +4345,10 @@ date</ColNames>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
     <key id="280" parent="266" name="characteristics_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16502</ObjectId>
+      <ObjectId>16512</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>863</StateNumber>
-      <UnderlyingIndexId>16501</UnderlyingIndexId>
+      <StateNumber>878</StateNumber>
+      <UnderlyingIndexId>16511</UnderlyingIndexId>
     </key>
     <key id="281" parent="266" name="unique_user_date">
       <ObjectId>16504</ObjectId>
