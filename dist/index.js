@@ -49,6 +49,8 @@ app.use((0, cors_1.default)({
         const allowedOrigins = [
             "http://localhost:3000",
             "http://localhost:3001",
+            "http://localhost:3002",
+            "http://localhost:3003",
             "https://wellbeing.rusanova.eu",
         ];
         if (allowedOrigins.indexOf(origin) === -1) {
@@ -77,6 +79,7 @@ app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     else {
         const { name, email, password } = result.data;
         const userId = (0, uuid_1.v4)();
+        console.log(result.data);
         yield client.query(`INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`);
         res.cookie("userId", userId);
         res.status(201).send({ name: name }).end();
