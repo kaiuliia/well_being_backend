@@ -43,6 +43,7 @@ app.use(
 
       const allowedOrigins = [
         "http://localhost:3000",
+        "http://localhost:3001",
         "https://wellbeing.rusanova.eu",
       ];
 
@@ -57,7 +58,12 @@ app.use(
     },
   }),
 );
-
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3001");
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//   res.header("Access-Control-Allow-Headers", "Content-Type");
+//   next();
+// });
 app.use(cookieParser());
 
 const port = process.env.PORT || 9090;
@@ -165,14 +171,14 @@ app.post(
       } = result.data;
 
       const id = uuidv4();
-
       await client.query(
-        `INSERT INTO public.survey ( id, user_id, general_mood,
-                                       appetite,
-                                       sleep,
-                                       anxiety,
-                                       yourself_time,
-                                       screen_time) VALUES ('${id}', '${userId}', '${general_mood}', '${appetite}', '${sleep}','${anxiety}','${yourself_time}','${screen_time}')`,
+        `INSERT INTO public.survey ( id, user_id, date, general_mood,
+                       appetite,
+                       sleep,
+                       anxiety,
+                       yourself_time,
+                       screen_time
+       ) VALUES ('${id}', '${userId}', CURRENT_TIMESTAMP,'${general_mood}', '${appetite}', '${sleep}','${anxiety}','${yourself_time}','${screen_time}')`,
       );
 
       res.status(201).send({ id }).end();

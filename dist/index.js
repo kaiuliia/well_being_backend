@@ -48,6 +48,7 @@ app.use((0, cors_1.default)({
             return callback(null, true);
         const allowedOrigins = [
             "http://localhost:3000",
+            "http://localhost:3001",
             "https://wellbeing.rusanova.eu",
         ];
         if (allowedOrigins.indexOf(origin) === -1) {
@@ -58,6 +59,12 @@ app.use((0, cors_1.default)({
         return callback(null, true);
     },
 }));
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3001");
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//   res.header("Access-Control-Allow-Headers", "Content-Type");
+//   next();
+// });
 app.use((0, cookie_parser_1.default)());
 const port = process.env.PORT || 9090;
 app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -109,12 +116,13 @@ app.post("/survey", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     else {
         const { general_mood, appetite, sleep, anxiety, yourself_time, screen_time, } = result.data;
         const id = (0, uuid_1.v4)();
-        yield client.query(`INSERT INTO public.survey ( id, user_id, general_mood,
-                                       appetite,
-                                       sleep,
-                                       anxiety,
-                                       yourself_time,
-                                       screen_time) VALUES ('${id}', '${userId}', '${general_mood}', '${appetite}', '${sleep}','${anxiety}','${yourself_time}','${screen_time}')`);
+        yield client.query(`INSERT INTO public.survey ( id, user_id, date, general_mood,
+                       appetite,
+                       sleep,
+                       anxiety,
+                       yourself_time,
+                       screen_time
+       ) VALUES ('${id}', '${userId}', CURRENT_TIMESTAMP,'${general_mood}', '${appetite}', '${sleep}','${anxiety}','${yourself_time}','${screen_time}')`);
         res.status(201).send({ id }).end();
     }
 }));
