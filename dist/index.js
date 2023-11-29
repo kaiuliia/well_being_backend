@@ -69,6 +69,31 @@ app.use((0, cors_1.default)({
 // });
 app.use((0, cookie_parser_1.default)());
 const port = process.env.PORT || 9090;
+//function counts your mood and gives you respond
+const moodResponse = (rows) => {
+    let advices = [];
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].general_mood < 5) {
+            advices.push("Your general mood is bad today! You need more care today");
+        }
+        if (rows[i].appetite < 5) {
+            advices.push("Try to feel what would you like ti eat. Sweet or salt, fresh veggies or bread. If you are not hungry, it's ok. Let your body feel what it wants ");
+        }
+        if (rows[i].sleep < 5) {
+            advices.push("Try to get sleep earlier today. See there is comfortable in your room or not");
+        }
+        if (rows[i].anxiety < 5) {
+            advices.push(" Use grounding techniques to stay present in the moment. Focus on your senses by observing what you see, hear, touch, taste, and smell. This can help shift your attention away from anxious thoughts.");
+        }
+        if (rows[i].yourself_time < 5) {
+            advices.push("Treat your personal time as a non-negotiable appointment. Block off specific time slots in your calendar for self-care activities, and stick to them as you would any other commitment.");
+        }
+        if (rows[i].screen_time < 5) {
+            advices.push("Your general mood is bad today! You need more care today");
+        }
+    }
+    let message = console.log(message);
+};
 app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = RegisterRequestSchema.safeParse(req.body);
     if (!result.success) {
@@ -79,7 +104,6 @@ app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     else {
         const { name, email, password } = result.data;
         const userId = (0, uuid_1.v4)();
-        console.log(result.data);
         yield client.query(`INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`);
         res.cookie("userId", userId);
         res.status(201).send({ name: name }).end();
@@ -128,6 +152,47 @@ app.post("/survey", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
        ) VALUES ('${id}', '${userId}', CURRENT_TIMESTAMP,'${general_mood}', '${appetite}', '${sleep}','${anxiety}','${yourself_time}','${screen_time}')`);
         res.status(201).send({ id }).end();
     }
+}));
+app.get("/survey", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.cookies;
+    if (!userId) {
+        res.status(401).send({ error: "no userId" });
+        return;
+    }
+    const { rows } = yield client.query(`SELECT * FROM public.survey WHERE user_id = '${userId}'`);
+    res.send(rows);
+}));
+app.get("/advice", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.cookies;
+    if (!userId) {
+        res.status(401).send({ error: "no userId" });
+        return;
+    }
+    const { rows } = yield client.query(`SELECT * FROM public.survey WHERE user_id = '${userId}'`);
+    // [
+    // {
+    //
+    //     "general_mood": "1",
+    //     "sleep": "a",
+    //     "appetite": "2",
+    //     "anxiety": "3",
+    //     "yourself_time": "1",
+    //     "screen_time": "1"
+    // },
+    // {
+    //     "general_mood": "1",
+    //     "sleep": "4",
+    //     "appetite": "2",
+    //     "anxiety": "3",
+    //     "yourself_time": "1",
+    //     "screen_time": "1"
+    // }
+    // ]
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].general_mood < 5) {
+        }
+    }
+    res.send(rows);
 }));
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
