@@ -295,12 +295,8 @@ app.get(
     //     "screen_time": "1"
     // }
     // ]
-    for (let i = 0; i < rows.length; i++) {
-      if (rows[i].general_mood < 5) {
-      }
-    }
 
-    res.send(rows);
+    res.send(moodResponse(rows));
   },
 );
 app.listen(port, () => {

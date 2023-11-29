@@ -89,10 +89,11 @@ const moodResponse = (rows) => {
             advices.push("Treat your personal time as a non-negotiable appointment. Block off specific time slots in your calendar for self-care activities, and stick to them as you would any other commitment.");
         }
         if (rows[i].screen_time < 5) {
-            advices.push("Your general mood is bad today! You need more care today");
+            advices.push("Use the built-in screen time or digital well-being features on your phone to set daily limits for specific apps.\n" +
+                "Set a timer for social media or other time-consuming apps to remind you to take breaks.");
         }
     }
-    let message = console.log(message);
+    return advices;
 };
 app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = RegisterRequestSchema.safeParse(req.body);
@@ -188,11 +189,7 @@ app.get("/advice", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     //     "screen_time": "1"
     // }
     // ]
-    for (let i = 0; i < rows.length; i++) {
-        if (rows[i].general_mood < 5) {
-        }
-    }
-    res.send(rows);
+    res.send(moodResponse(rows));
 }));
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
