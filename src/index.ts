@@ -255,7 +255,6 @@ app.get(
     res.send(rows);
   },
 );
-
 app.get(
   "/advice",
   async (
