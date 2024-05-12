@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { auth } from "./auth";
+import { dashboard } from "./dashboard";
+import { surveys } from "./surveys";
 
 //For env File
 dotenv.config();
@@ -46,7 +48,8 @@ app.use(
 // });
 app.use(cookieParser());
 app.use(auth);
-
+app.use(dashboard);
+app.use(surveys);
 const port = process.env.PORT || 9090;
 
 //function counts your mood and gives you respond

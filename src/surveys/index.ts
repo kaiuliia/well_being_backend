@@ -2,7 +2,7 @@ import { Router } from "express";
 import { addSurvey } from "./add";
 import { getSurveyList } from "./list";
 
-export const auth = Router();
+export const surveys = Router();
 
-auth.post("/survey", addSurvey);
-auth.get("/survey", getSurveyList);
+surveys.post("/survey", addSurvey);
+surveys.get("/survey", getSurveyList);
