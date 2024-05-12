@@ -26,18 +26,6 @@ export const addSurvey = async (
 ): Promise<void> => {
   const { userId } = req.cookies;
 
-  if (!userId) {
-    res.status(401).send({ error: "no userId" });
-    return;
-  }
-
-  const { rows } = await client.query(
-    `SELECT * FROM public.users WHERE id = '${userId}'`,
-  );
-  if (rows.length === 0) {
-    res.status(401).send({ error: "no userId" });
-    return;
-  }
   const result = SurveyRequestSchema.safeParse(req.body);
   if (!result.success) {
     const error = result.error;

@@ -8,10 +8,7 @@ export const getSurveyList = async (
   res: Response,
 ): Promise<void> => {
   const { userId } = req.cookies;
-  if (!userId) {
-    res.status(401).send({ error: "no userId" });
-    return;
-  }
+
   const { rows } = await client.query(
     `SELECT * FROM public.survey WHERE user_id = '${userId}'`,
   );
