@@ -12,6 +12,7 @@ const RegisterRequestSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string(),
+  isChecked: z.boolean(),
 });
 export const login = async (
   req: Request<
@@ -28,6 +29,7 @@ export const login = async (
 
   if (rows.length > 0) {
     res.cookie("userId", rows[0].id);
+
     res
       .status(201)
       .send({ name: `${rows[0].name}.` })
