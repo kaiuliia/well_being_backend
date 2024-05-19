@@ -10,18 +10,15 @@ interface SurveyResponse {
 type SurveyRequest = z.infer<typeof SurveyRequestSchema>;
 const SurveyRequestSchema = z.object({
   general_mood: z.number(),
-  appetite: z.number(),
+  activities: z.number(),
   sleep: z.number(),
-  anxiety: z.number(),
+  calmness: z.number(),
   yourself_time: z.number(),
-  screen_time: z.number(),
+  date: z.string(),
 });
+
 export const addSurvey = async (
-  req: Request<
-    {} /*p*/,
-    SurveyResponse /*resbody - то что я должна ответить*/,
-    SurveyRequest /*reqbody - то что я принимаю*/
-  >,
+  req: Request<{}, SurveyResponse, SurveyRequest>,
   res: Response,
 ): Promise<void> => {
   const { userId } = req.cookies;
@@ -32,26 +29,31 @@ export const addSurvey = async (
     res.status(400).send({ error });
     return;
   } else {
-    const {
-      general_mood,
-      appetite,
-      sleep,
-      anxiety,
-      yourself_time,
-      screen_time,
-    } = result.data;
+    const { general_mood, activities, sleep, calmness, yourself_time, date } =
+      result.data;
 
     const id = uuidv4();
-    await client.query(
-      `INSERT INTO public.survey ( id, user_id, date, general_mood,
-                       appetite,
-                       sleep,
-                       anxiety,
-                       yourself_time,
-                       screen_time
-       ) VALUES ('${id}', '${userId}', CURRENT_TIMESTAMP,'${general_mood}', '${appetite}', '${sleep}','${anxiety}','${yourself_time}','${screen_time}')`,
-    );
+    try {
+      await client.query(
+        `INSERT INTO public.survey (
+           id, user_id, general_mood, activities, sleep, calmness, yourself_time, date
+         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [
+          id,
+          userId,
+          general_mood,
+          activities,
+          sleep,
+          calmness,
+          yourself_time,
+          date,
+        ],
+      );
 
-    res.status(201).send({ id }).end();
+      res.status(201).send({ id }).end();
+    } catch (error) {
+      console.error("Error inserting survey:", error);
+      res.status(500).send({ error: "Internal Server Error" });
+    }
   }
 };

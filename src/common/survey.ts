@@ -4,11 +4,10 @@ import { getSurveyList } from "../surveys/list";
 
 export interface Survey {
   general_mood: number;
-  appetite: number;
+  calmness: number;
   sleep: number;
-  anxiety: number;
+  activities: number;
   yourself_time: number;
-  screen_time: number;
 }
 
 export const survey = Router();

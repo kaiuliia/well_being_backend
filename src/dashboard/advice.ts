@@ -3,12 +3,12 @@ import { client } from "../database/client";
 import { Survey } from "../common/survey";
 
 const moodResponse = (rows: Survey[]) => {
-  let advices: any[] = [];
+  const advices: any[] = [];
   for (let i = 0; i < rows.length; i++) {
     if (rows[i].general_mood < 5) {
       advices.push("Your general mood is bad today! You need more care today");
     }
-    if (rows[i].appetite < 5) {
+    if (rows[i].calmness < 5) {
       advices.push(
         "Try to feel what would you like ti eat. Sweet or salt, fresh veggies or bread. If you are not hungry, it's ok. Let your body feel what it wants ",
       );
@@ -18,7 +18,7 @@ const moodResponse = (rows: Survey[]) => {
         "Try to get sleep earlier today. See there is comfortable in your room or not",
       );
     }
-    if (rows[i].anxiety < 5) {
+    if (rows[i].activities < 5) {
       advices.push(
         " Use grounding techniques to stay present in the moment. Focus on your senses by observing what you see, hear, touch, taste, and smell. This can help shift your attention away from anxious thoughts.",
       );
@@ -26,12 +26,6 @@ const moodResponse = (rows: Survey[]) => {
     if (rows[i].yourself_time < 5) {
       advices.push(
         "Treat your personal time as a non-negotiable appointment. Block off specific time slots in your calendar for self-care activities, and stick to them as you would any other commitment.",
-      );
-    }
-    if (rows[i].screen_time < 5) {
-      advices.push(
-        "Use the built-in screen time or digital well-being features on your phone to set daily limits for specific apps.\n" +
-          "Set a timer for social media or other time-consuming apps to remind you to take breaks.",
       );
     }
   }
