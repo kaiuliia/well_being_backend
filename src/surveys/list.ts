@@ -17,8 +17,12 @@ export const getSurveyList = async (
     `SELECT * FROM public.survey WHERE user_id = $1 AND date >= $2 AND date <= $3;`,
     [userId, startDate, endDate],
   );
+  console.log("rows", rows);
 
-  res.send(rows);
+  // const fullDashboard = [];
+  // for (let i = 0; i < 6; i++) {
+  //   res.send(rows);
+  // }
 };
 
 // {
