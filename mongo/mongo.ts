@@ -1,16 +1,17 @@
 import { MongoClient } from "mongodb";
+
 const username = encodeURIComponent("karjuale");
-const password = encodeURIComponent("2f3cvLHU40pc8CQj");
+const password = encodeURIComponent("sgiBFy1MaC0h1Plk");
 const uri = `mongodb+srv://${username}:${password}@cluster0.tikl9.mongodb.net/`;
 const client = new MongoClient(uri);
 
-const users = client.db("YuliaDB").collection("users");
+const users = client.db("YUapp").collection("users");
 
 export const start = async () => {
   try {
     await client.connect();
     console.log("db works");
-    await client.db("YuliaDB").createCollection("users");
+    await client.db("YUapp").createCollection("users");
   } catch (e) {
     console.log("db not connected");
   }

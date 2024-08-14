@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import { auth } from "./auth";
 import { dashboard } from "./dashboard";
 import { surveys } from "./surveys";
-
+import { start } from "../mongo/mongo";
 //For env File
 dotenv.config();
 
@@ -56,4 +56,5 @@ const port = process.env.PORT || 9090;
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
+  start();
 });
