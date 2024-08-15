@@ -11,6 +11,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const auth_1 = require("./auth");
 const dashboard_1 = require("./dashboard");
 const surveys_1 = require("./surveys");
+const mongo_1 = require("./mongo/mongo");
 //For env File
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -49,6 +50,7 @@ app.use(dashboard_1.dashboard);
 app.use(surveys_1.surveys);
 const port = process.env.PORT || 9090;
 //function counts your mood and gives you respond
-app.listen(port, () => {
+app.listen(port, async () => {
     console.log(`Server listening at http://localhost:${port}`);
+    await (0, mongo_1.start)();
 });

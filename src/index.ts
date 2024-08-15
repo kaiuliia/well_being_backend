@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import { auth } from "./auth";
 import { dashboard } from "./dashboard";
 import { surveys } from "./surveys";
-import { start } from "../mongo/mongo";
+import { start } from "./mongo/mongo";
 //For env File
 dotenv.config();
 
@@ -54,7 +54,7 @@ const port = process.env.PORT || 9090;
 
 //function counts your mood and gives you respond
 
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`Server listening at http://localhost:${port}`);
-  start();
+  await start();
 });
