@@ -43,10 +43,27 @@ export const addSurvey = async (
 
     const id = uuidv4();
     try {
+      // await client.query(
+      //   `SELECT NOT EXISTS (
+      //    SELECT 1
+      //    FROM public.survey
+      //    WHERE user_id = $1
+      //      AND date = $2
+      //  ) AS does_not_exist`,
+      //   [userId, date],
+      // );
+
       await client.query(
         `INSERT INTO public.survey (
-           id, user_id, general_mood, activities, sleep, calmness, yourself_time, date
-         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+              id, user_id, general_mood, activities, sleep, calmness, yourself_time, date
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+           ON CONFLICT (user_id, date)  -- Conflict on unique constraint
+               DO UPDATE SET
+                             general_mood = EXCLUDED.general_mood,
+                             activities = EXCLUDED.activities,
+                             sleep = EXCLUDED.sleep,
+                             calmness = EXCLUDED.calmness,
+                             yourself_time = EXCLUDED.yourself_time`,
         [
           id,
           userId,
