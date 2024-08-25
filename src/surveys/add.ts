@@ -16,7 +16,16 @@ const SurveyRequestSchema = z.object({
   yourself_time: z.number(),
   date: z.string(),
 });
+const SleepRequestSchema = z.object({
+  // general_mood: z.number(),
+  // activities: z.number(),
+  sleep: z.number(),
+  // calmness: z.number(),
+  // yourself_time: z.number(),
+  date: z.string(),
+});
 
+type SleepRequest = z.infer<typeof SleepRequestSchema>;
 export const addSurvey = async (
   req: Request<{}, SurveyResponse, SurveyRequest>,
   res: Response,
@@ -48,6 +57,37 @@ export const addSurvey = async (
           yourself_time,
           date,
         ],
+      );
+
+      res.status(201).send({ id }).end();
+    } catch (error) {
+      console.error("Error inserting survey:", error);
+      res.status(500).send({ error: "Internal Server Error" });
+    }
+  }
+};
+
+export const addSleep = async (
+  req: Request<{}, SurveyResponse, SleepRequest>,
+  res: Response,
+): Promise<void> => {
+  const { userId } = req.cookies;
+
+  const result = SleepRequestSchema.safeParse(req.body);
+  if (!result.success) {
+    const error = result.error;
+    res.status(400).send({ error });
+    return;
+  } else {
+    const { sleep, date } = result.data;
+
+    const id = uuidv4();
+    try {
+      await client.query(
+        `INSERT INTO public.survey (
+           id, user_id, sleep, date
+         ) VALUES ($1, $2, $3, $4)`,
+        [id, userId, sleep, date],
       );
 
       res.status(201).send({ id }).end();
