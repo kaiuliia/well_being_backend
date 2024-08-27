@@ -14,11 +14,9 @@ export const getSurveyList = async (
   }
 
   const { rows } = await client.query(
-    `SELECT * FROM public.survey WHERE user_id = $1 AND date = $2 OR date = $3;`,
+    `SELECT * FROM public.survey WHERE user_id = $1 AND date BETWEEN $2 AND $3;`,
     [userId, startDate, endDate],
   );
-
-  console.log(rows);
 
   res.send(rows);
 };
