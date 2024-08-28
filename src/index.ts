@@ -1,6 +1,7 @@
-import express, { Application } from "express";
+import express, { Application, ErrorRequestHandler } from "express";
 import { json } from "body-parser";
 import dotenv from "dotenv";
+import "express-async-errors";
 
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -50,6 +51,14 @@ app.use(cookieParser());
 app.use(auth);
 app.use(dashboard);
 app.use(surveys);
+
+export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  console.error(err);
+  res.status(500).send({ errors: [{ message: "Something went wrong" }] });
+};
+
+app.use(errorHandler);
+
 const port = process.env.PORT || 9090;
 
 //function counts your mood and gives you respond
