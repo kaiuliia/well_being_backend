@@ -34,7 +34,11 @@ export const register = async (
     await client.query(
       `INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`,
     );
-    res.cookie("userId", userId);
+    res.cookie("userId", userId,{
+      sameSite: "none",
+      secure: true,
+      httpOnly: true
+    });
     res.status(201).send({ name: name }).end();
   }
 };

@@ -28,7 +28,11 @@ export const login = async (
   );
 
   if (rows.length > 0) {
-    res.cookie("userId", rows[0].id);
+    res.cookie("userId", rows[0].id, {
+      sameSite: "none",
+      secure: true,
+      httpOnly: true
+    });
 
     res
       .status(201)
