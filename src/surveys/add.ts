@@ -17,11 +17,7 @@ const SurveyRequestSchema = z.object({
   date: z.string(),
 });
 const SleepRequestSchema = z.object({
-  // general_mood: z.number(),
-  // activities: z.number(),
   sleep: z.number(),
-  // calmness: z.number(),
-  // yourself_time: z.number(),
   date: z.string(),
 });
 
@@ -43,15 +39,6 @@ export const addSurvey = async (
 
     const id = uuidv4();
     try {
-      // await client.query(
-      //   `SELECT NOT EXISTS (
-      //    SELECT 1
-      //    FROM public.survey
-      //    WHERE user_id = $1
-      //      AND date = $2
-      //  ) AS does_not_exist`,
-      //   [userId, date],
-      // );
 
       await client.query(
         `INSERT INTO public.survey (

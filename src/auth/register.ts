@@ -17,8 +17,8 @@ const RegisterRequestSchema = z.object({
 export const register = async (
   req: Request<
     {} /*p*/,
-    RegisterResponse /*resbody - то что я должна ответить*/,
-    RegisterRequest /*reqbody - то что я принимаю*/
+    RegisterResponse ,
+    RegisterRequest
   >,
   res: Response,
 ): Promise<void> => {

@@ -42,27 +42,6 @@ export const getAdvice = async (
   const { rows } = await client.query(
     `SELECT * FROM public.survey WHERE user_id = '${userId}'`,
   );
-  // [
-  // {
-  //
-  //     "general_mood": "1",
-  //     "sleep": "a",
-  //     "appetite": "2",
-  //     "anxiety": "3",
-  //     "yourself_time": "1",
-  //     "screen_time": "1"
-  // },
-
-  // {
-
-  //     "general_mood": "1",
-  //     "sleep": "4",
-  //     "appetite": "2",
-  //     "anxiety": "3",
-  //     "yourself_time": "1",
-  //     "screen_time": "1"
-  // }
-  // ]
 
   res.send(moodResponse(rows));
 };
