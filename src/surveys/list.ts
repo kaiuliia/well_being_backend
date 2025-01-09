@@ -5,7 +5,7 @@ export const getSurveyList = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const { userId } = req.cookies;
+  const  userId  = req.session?.userId
   const { startDate, endDate } = req.query;
 
   if (!startDate || !endDate) {
@@ -22,7 +22,7 @@ export const getSurveyList = async (
 };
 
 export const getToday = async (req: Request, res: Response): Promise<void> => {
-  const { userId } = req.cookies;
+  const  userId  = req.session?.userId;
   // const { startDate, endDate } = req.query;
 
   // if (!startDate || !endDate) {

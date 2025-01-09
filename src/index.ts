@@ -8,12 +8,18 @@ import cookieParser from "cookie-parser";
 import { auth } from "./auth";
 import { dashboard } from "./dashboard";
 import { surveys } from "./surveys";
-
+import cookieSession from 'cookie-session';
 
 dotenv.config();
 
 const app: Application = express();
 app.use(json());
+
+app.use(cookieSession({
+  name: 'session',
+  keys: [process.env.SESSION_KEY!],
+  maxAge: 36 * 60 * 60 * 1000 //36 hours
+}))
 
 app.use(
   cors({
@@ -39,7 +45,8 @@ app.use(
 
       return callback(null, true);
     },
-  }),
+  },
+ ),
 );
 
 app.use(cookieParser());

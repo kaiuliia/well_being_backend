@@ -26,7 +26,7 @@ export const addSurvey = async (
   req: Request<{}, SurveyResponse, SurveyRequest>,
   res: Response,
 ): Promise<void> => {
-  const { userId } = req.cookies;
+  const  userId  = req.session?.userId
 
   const result = SurveyRequestSchema.safeParse(req.body);
   if (!result.success) {
@@ -75,7 +75,7 @@ export const addSleep = async (
   req: Request<{}, SurveyResponse, SleepRequest>,
   res: Response,
 ): Promise<void> => {
-  const { userId } = req.cookies;
+    const  userId  = req.session?.userId
 
   const result = SleepRequestSchema.safeParse(req.body);
   if (!result.success) {

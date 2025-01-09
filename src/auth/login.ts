@@ -16,7 +16,7 @@ const RegisterRequestSchema = z.object({
 });
 export const login = async (
   req: Request<
-    {} /*p*/,
+    unknown /*p*/,
     RegisterResponse,
     RegisterRequest
   >,
@@ -28,16 +28,13 @@ export const login = async (
   );
 
   if (rows.length > 0) {
-    res.cookie("userId", rows[0].id, {
-      sameSite: "none",
-      secure: true,
-      httpOnly: true
-    });
-
+    req.session!.userId = rows[0].id;
+    req.session!.email = email;
     res
       .status(201)
       .send({ name: `${rows[0].name}.` })
       .end();
+
   } else {
     res.status(404).send({ error: "Sorry, we cannot find that!" });
   }
