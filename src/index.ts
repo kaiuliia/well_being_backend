@@ -17,7 +17,7 @@ app.use(json());
 
 app.use(cookieSession({
   name: 'session',
-  keys: ['key1'], //TODO: generate secret key
+  keys: [process.env.SESSION_KEY!],
   maxAge: 36 * 60 * 60 * 1000 //36 hours
 }))
 
