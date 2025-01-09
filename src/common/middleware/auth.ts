@@ -6,7 +6,7 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { userId } = req.cookies;
+  const userId = req.session?.userId;
 
   if (!userId) {
     res.status(401).send({ error: "no userId" });

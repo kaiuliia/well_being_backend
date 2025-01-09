@@ -16,7 +16,7 @@ const RegisterRequestSchema = z.object({
 
 export const register = async (
   req: Request<
-    {} /*p*/,
+    unknown /*p*/,
     RegisterResponse ,
     RegisterRequest
   >,
@@ -34,11 +34,8 @@ export const register = async (
     await client.query(
       `INSERT INTO public.users (name, email, password, id) VALUES ('${name}', '${email}', '${password}', '${userId}')`,
     );
-    res.cookie("userId", userId,{
-      sameSite: "none",
-      secure: true,
-      httpOnly: true
-    });
+    req.session!.userId = userId;
+    req.session!.email = email;
     res.status(201).send({ name: name }).end();
   }
 };

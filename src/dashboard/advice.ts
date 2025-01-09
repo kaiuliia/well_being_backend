@@ -34,11 +34,9 @@ const moodResponse = (rows: Survey[]) => {
 
 export const getAdvice = async (
   req: Request<{} /*p*/>,
-  // RegisterResponse /*resbody - то что я должна ответить*/,
-  // RegisterRequest /*reqbody - то что я принимаю*/
   res: Response,
 ): Promise<void> => {
-  const { userId } = req.cookies;
+  const  userId  = req.session?.userId
   const { rows } = await client.query(
     `SELECT * FROM public.survey WHERE user_id = '${userId}'`,
   );
