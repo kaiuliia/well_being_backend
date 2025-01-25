@@ -1,34 +1,48 @@
-import { Request, Response } from "express";
-import { client } from "../database/client";
-import { Survey } from "../common/survey";
+import {Request, Response} from "express";
+import {client} from "../database/client";
+import {activityTips, calmnessTips, meTimeTips, moodBoostingTips, sleepTips} from "./advicesList";
+// import { Survey } from "../common/survey";
 
-const moodResponse = (rows: Survey[]) => {
-  const advices: any[] = [];
-  for (let i = 0; i < rows.length; i++) {
-    if (rows[i].general_mood < 5) {
-      advices.push("Your general mood is bad today! You need more care today");
-    }
-    if (rows[i].calmness < 5) {
-      advices.push(
-        "Try to feel what would you like ti eat. Sweet or salt, fresh veggies or bread. If you are not hungry, it's ok. Let your body feel what it wants ",
-      );
-    }
-    if (rows[i].sleep < 5) {
-      advices.push(
-        "Try to get sleep earlier today. See there is comfortable in your room or not",
-      );
-    }
-    if (rows[i].activities < 5) {
-      advices.push(
-        " Use grounding techniques to stay present in the moment. Focus on your senses by observing what you see, hear, touch, taste, and smell. This can help shift your attention away from anxious thoughts.",
-      );
-    }
-    if (rows[i].yourself_time < 5) {
-      advices.push(
-        "Treat your personal time as a non-negotiable appointment. Block off specific time slots in your calendar for self-care activities, and stick to them as you would any other commitment.",
-      );
-    }
+interface oneDayData {
+  id: string,
+  user_id: string,
+  date:string,
+  general_mood: string,
+  sleep:string,
+  activities:string,
+  yourself_time: string,
+  calmness: string,
+
+}
+
+const getRandomElements = (obj: Record<string, string>, title:string): { title: string; advices: string[] } => {
+  const values = Object.values(obj);
+  const randomAdvices = values.sort(() => Math.random() - 0.5).slice(0, 3);
+  return {
+    title: title,
+    advices: randomAdvices,
+  };
+};
+const moodResponse = (rows:oneDayData[]) => {
+  const advices  = [];
+  console.log('rows', rows)
+  const today = rows.filter((element)=>element.date === new Date().toISOString().split('T')[0])
+if(Number(today[0].general_mood)<50) {
+  advices.push(getRandomElements(moodBoostingTips, 'general_mood'))
+}
+  if(Number(today[0].sleep)<50) {
+    advices.push(getRandomElements(sleepTips, 'sleep'))
   }
+  if(Number(today[0].activities)<50) {
+    advices.push(getRandomElements(activityTips,'activities'))
+  }
+  if(Number(today[0].yourself_time)<50) {
+    advices.push(getRandomElements(meTimeTips,'yourself_time'))
+  }
+  if(Number(today[0].calmness)<50) {
+    advices.push(getRandomElements(calmnessTips,'calmness'))
+  }
+
   return advices;
 };
 
@@ -41,5 +55,10 @@ export const getAdvice = async (
     `SELECT * FROM public.survey WHERE user_id = '${userId}'`,
   );
 
+
+//   const response = [{'yourself_time': {advice: 'random advice', link: 'random link'}
+// }, {'activities': {advice: 'random advice', link: 'random link'}}, {'sleep': {advice: 'random advice', link: 'random link'}}  ]
   res.send(moodResponse(rows));
+
+
 };
